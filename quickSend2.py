@@ -24,6 +24,7 @@ __copyright__ = "Witold Firlej"
 
 import sys
 import ConfigParser
+import os
 
 def verbose (msg, level):
 	try:
@@ -40,8 +41,22 @@ def verbose (msg, level):
 	except IndexError:
 		pass
 
+def checkFiles():
+	"""
+	Check if basic conf file exists. If not, create them.
+	"""
+	if not os.path.exists('quickSend2.conf'):
+		verbose("Creating quickSend2.conf file", 1)
+		config.add_section("Server")
+		config.set("Server", "host", "")
+		config.set("Server", "user", "")
+		config.set("Server", "passwd", "") 		##XXX no plain text here!
+		with open('quickSend2.conf', 'wb') as configfile:
+			config.write(configfile)
 
 
 
 if __name__ == "__main__":
 	verbose("\n\t%s \n\tversion %s \n\tby %s\n" % (__project__, __version__, __author__),1)
+	config = ConfigParser.ConfigParser()
+	checkFiles()
