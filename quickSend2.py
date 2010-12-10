@@ -25,6 +25,7 @@ __copyright__ = "Witold Firlej"
 import sys
 import ConfigParser
 import os
+from ftplib import FTP_TLS
 
 def verbose (msg, level):
 	try:
@@ -54,9 +55,18 @@ def checkFiles():
 		with open('quickSend2.conf', 'wb') as configfile:
 			config.write(configfile)
 
-
+def work():
+	config.read("quickSend2.conf")
+	ftp = FTP_TLS(config.get("Server", "host"))
+	ftp.login(config.get("Server", "user"), config.get("Server", "passwd"))
+	#ftp.prot_p()
+	#print ftp.sendcmd("PWD")
+	#data = ftp.nlst()
+	#for line in data:
+		#print line
 
 if __name__ == "__main__":
 	verbose("\n\t%s \n\tversion %s \n\tby %s\n" % (__project__, __version__, __author__),1)
 	config = ConfigParser.ConfigParser()
 	checkFiles()
+	work()
