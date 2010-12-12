@@ -69,10 +69,10 @@ def checkLocalFile(file):
 	##XXX check, also, size of the file
 	if result:
 		verbose("Local file exist",1)
-		return result
+		return result # True
 	else:
 		verbose("There is no something like "+file,1)
-		return result
+		return result # False
 
 
 
@@ -83,6 +83,17 @@ def checkRemoteFile(file):
 		return False
 	else:
 		return True
+
+
+def sendFile(file):
+	verbose("Sending...",1)
+	try:
+		ftp.storbinary("STOR " + file, open(file, "rb"), 1024)
+		verbose("...OK!",1)
+	except:
+		verbose("...failed!",1)
+
+
 
 if __name__ == "__main__":
 	verbose("\n\t%s \n\tversion %s \n\tby %s\n" % (__project__, __version__, __author__),1)
@@ -97,7 +108,6 @@ if __name__ == "__main__":
 	except:
 		verbose("Can not connect!",1)
 	fileToSend = sys.argv[1]
-	if checkLocalFile(fileToSend):
-		if checkRemoteFile(fileToSend):
-			print "x"
+	if checkLocalFile(fileToSend) and checkRemoteFile(fileToSend):
+			sendFile(fileToSend)
 	verbose("Bye!",1)
