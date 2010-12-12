@@ -89,11 +89,18 @@ def sendFile(file):
 	verbose("Sending...")
 	try:
 		ftp.storbinary("STOR " + file, open(file, "rb"), 1024)
+		addComment(file)
 		verbose("...OK!")
 	except:
 		verbose("...failed!")
+		raise
 
-
+def addComment(file):
+	open('comment.txt', 'w').write(raw_input("Input comment: "))
+	ftp.storlines("STOR " + ".comments/"+file+".comment", open('comment.txt'))
+	#plik = open(file+".comment", 'w')
+	#plik.write("komentarz do pliku")
+	#plik.close()
 
 if __name__ == "__main__":
 	verbose("\n\t%s \n\tversion %s \n\tby %s\n" % (__project__, __version__, __author__))
