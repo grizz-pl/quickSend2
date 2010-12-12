@@ -87,24 +87,60 @@ def checkRemoteFile(filename):
 
 
 def sendFile(filename):
+	category = chooseCategory()
 	verbose("Sending...")
 	try:
-		ftp.storbinary("STOR " + filename, open(filename, "rb"), 1024)
-		addComment(filename)
+		ftp.storbinary("STOR " + category + "/" +filename, open(filename, "rb"), 1024)
 		verbose("...OK!")
 	except:
 		verbose("...failed!")
 		raise
+	addComment(filename, category)
 
 
 
-def addComment(filename):
+def addComment(filename, category):
+	##XXX try / except
 	open('comment.txt', 'w').write(raw_input("Input comment: "))
-	ftp.storlines("STOR " + ".comments/"+filename+".comment", open('comment.txt'))
-	#plik = open(file+".comment", 'w')
-	#plik.write("komentarz do pliku")
-	#plik.close()
-	
+	ftp.storlines("STOR " + ".comments/"+category+"/"+filename+".comment", open('comment.txt'))
+
+
+
+
+
+def chooseCategory():
+	"""
+	choose category
+	@return choosed category name
+	"""
+	files = ftp.nlst()
+	folders = []
+	for filename in files:
+		if isDirectory(filename):
+			folders.append(filename)
+	i = 1
+	for category in folders:
+		print str(i)+ " - " + category
+		i += 1
+	while 1:
+		x = raw_input("Choose category: ")
+		if x.isdigit():
+			return folders[int(x)-1] 			# return category name
+		else:
+			print "Numbers only!"
+
+
+
+
+def isDirectory(filename):
+	current = ftp.pwd()
+	try:
+		ftp.cwd(filename)
+	except:
+		ftp.cwd(current)
+		return False
+	ftp.cwd(current)
+	return True
 
 
 
