@@ -64,6 +64,15 @@ def connectToFtp():
 	ftp.login(config.get("Server", "user"), config.get("Server", "passwd"))
 	ftp.prot_p()
 
+def checkLocalFile(file):
+	result = os.path.isfile(file)
+	if result:
+		verbose("Local file exist",1)
+		return result
+	else:
+		verbose("There is no something like "+file,1)
+		return result
+
 
 
 if __name__ == "__main__":
@@ -72,5 +81,11 @@ if __name__ == "__main__":
 	checkFiles()
 	config.read("quickSend2.conf")
 	ftp = FTP_TLS()
-	connectToFtp()
+	verbose("Conecting...", 1)
+	try:
+		connectToFtp()
+		verbose("Connected!",1)
+	except:
+		verbose("Can not connect!",1)
+	checkLocalFile(sys.argv[1])
 	
