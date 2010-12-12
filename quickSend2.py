@@ -42,6 +42,8 @@ def verbose (msg, level):
 	except IndexError:
 		pass
 
+
+
 def checkFiles():
 	"""
 	Check if basic conf file exists. If not, create them.
@@ -55,18 +57,20 @@ def checkFiles():
 		with open('quickSend2.conf', 'wb') as configfile:
 			config.write(configfile)
 
-def work():
-	config.read("quickSend2.conf")
-	ftp = FTP_TLS(config.get("Server", "host"))
+
+
+def connectToFtp():
+	ftp.connect(config.get("Server", "host"))
 	ftp.login(config.get("Server", "user"), config.get("Server", "passwd"))
-	#ftp.prot_p()
-	#print ftp.sendcmd("PWD")
-	#data = ftp.nlst()
-	#for line in data:
-		#print line
+	ftp.prot_p()
+
+
 
 if __name__ == "__main__":
 	verbose("\n\t%s \n\tversion %s \n\tby %s\n" % (__project__, __version__, __author__),1)
 	config = ConfigParser.ConfigParser()
 	checkFiles()
-	work()
+	config.read("quickSend2.conf")
+	ftp = FTP_TLS()
+	connectToFtp()
+	
