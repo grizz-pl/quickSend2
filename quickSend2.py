@@ -66,6 +66,7 @@ def connectToFtp():
 
 def checkLocalFile(file):
 	result = os.path.isfile(file)
+	##XXX check, also, size of the file
 	if result:
 		verbose("Local file exist",1)
 		return result
@@ -74,6 +75,14 @@ def checkLocalFile(file):
 		return result
 
 
+
+def checkRemoteFile(file):
+	files = ftp.nlst()
+	if file in files:
+		verbose("There is file named %s on Server"%file,1)
+		return False
+	else:
+		return True
 
 if __name__ == "__main__":
 	verbose("\n\t%s \n\tversion %s \n\tby %s\n" % (__project__, __version__, __author__),1)
@@ -87,5 +96,8 @@ if __name__ == "__main__":
 		verbose("Connected!",1)
 	except:
 		verbose("Can not connect!",1)
-	checkLocalFile(sys.argv[1])
-	
+	fileToSend = sys.argv[1]
+	if checkLocalFile(fileToSend):
+		if checkRemoteFile(fileToSend):
+			print "x"
+	verbose("Bye!",1)
