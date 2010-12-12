@@ -85,15 +85,18 @@ def checkRemoteFile(filename):
 		return True
 
 
+
 def sendFile(filename):
 	verbose("Sending...")
 	try:
-		ftp.storbinary("STOR " + filename, open(file, "rb"), 1024)
+		ftp.storbinary("STOR " + filename, open(filename, "rb"), 1024)
 		addComment(filename)
 		verbose("...OK!")
 	except:
 		verbose("...failed!")
 		raise
+
+
 
 def addComment(filename):
 	open('comment.txt', 'w').write(raw_input("Input comment: "))
@@ -102,6 +105,7 @@ def addComment(filename):
 	#plik.write("komentarz do pliku")
 	#plik.close()
 	
+
 
 
 
