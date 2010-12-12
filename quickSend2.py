@@ -64,43 +64,46 @@ def connectToFtp():
 	ftp.login(config.get("Server", "user"), config.get("Server", "passwd"))
 	ftp.prot_p()
 
-def checkLocalFile(file):
-	result = os.path.isfile(file)
+def checkLocalFile(filename):
+	result = os.path.isfile(filename)
 	##XXX check, also, size of the file
 	if result:
 		verbose("Local file exist")
 		return result # True
 	else:
-		verbose("There is no something like "+file)
+		verbose("There is no something like "+filename)
 		return result # False
 
 
 
-def checkRemoteFile(file):
+def checkRemoteFile(filename):
 	files = ftp.nlst()
-	if file in files:
-		verbose("There is file named %s on Server"%file)
+	if filename in files:
+		verbose("There is file named %s on Server"%filename)
 		return False
 	else:
 		return True
 
 
-def sendFile(file):
+def sendFile(filename):
 	verbose("Sending...")
 	try:
-		ftp.storbinary("STOR " + file, open(file, "rb"), 1024)
-		addComment(file)
+		ftp.storbinary("STOR " + filename, open(file, "rb"), 1024)
+		addComment(filename)
 		verbose("...OK!")
 	except:
 		verbose("...failed!")
 		raise
 
-def addComment(file):
+def addComment(filename):
 	open('comment.txt', 'w').write(raw_input("Input comment: "))
-	ftp.storlines("STOR " + ".comments/"+file+".comment", open('comment.txt'))
+	ftp.storlines("STOR " + ".comments/"+filename+".comment", open('comment.txt'))
 	#plik = open(file+".comment", 'w')
 	#plik.write("komentarz do pliku")
 	#plik.close()
+	
+
+
 
 if __name__ == "__main__":
 	verbose("\n\t%s \n\tversion %s \n\tby %s\n" % (__project__, __version__, __author__))
