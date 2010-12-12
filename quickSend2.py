@@ -27,7 +27,7 @@ import ConfigParser
 import os
 from ftplib import FTP_TLS
 
-def verbose (msg, level):
+def verbose (msg, level=1):
 	try:
 		for item in sys.argv:
 			if item == "-v" and level == 1:
@@ -49,7 +49,7 @@ def checkFiles():
 	Check if basic conf file exists. If not, create them.
 	"""
 	if not os.path.exists('quickSend2.conf'):
-		verbose("Creating quickSend2.conf file", 1)
+		verbose("Creating quickSend2.conf file")
 		config.add_section("Server")
 		config.set("Server", "host", "")
 		config.set("Server", "user", "")
@@ -68,10 +68,10 @@ def checkLocalFile(file):
 	result = os.path.isfile(file)
 	##XXX check, also, size of the file
 	if result:
-		verbose("Local file exist",1)
+		verbose("Local file exist")
 		return result # True
 	else:
-		verbose("There is no something like "+file,1)
+		verbose("There is no something like "+file)
 		return result # False
 
 
@@ -79,35 +79,35 @@ def checkLocalFile(file):
 def checkRemoteFile(file):
 	files = ftp.nlst()
 	if file in files:
-		verbose("There is file named %s on Server"%file,1)
+		verbose("There is file named %s on Server"%file)
 		return False
 	else:
 		return True
 
 
 def sendFile(file):
-	verbose("Sending...",1)
+	verbose("Sending...")
 	try:
 		ftp.storbinary("STOR " + file, open(file, "rb"), 1024)
-		verbose("...OK!",1)
+		verbose("...OK!")
 	except:
-		verbose("...failed!",1)
+		verbose("...failed!")
 
 
 
 if __name__ == "__main__":
-	verbose("\n\t%s \n\tversion %s \n\tby %s\n" % (__project__, __version__, __author__),1)
+	verbose("\n\t%s \n\tversion %s \n\tby %s\n" % (__project__, __version__, __author__))
 	config = ConfigParser.ConfigParser()
 	checkFiles()
 	config.read("quickSend2.conf")
 	ftp = FTP_TLS()
-	verbose("Conecting...", 1)
+	verbose("Conecting...")
 	try:
 		connectToFtp()
-		verbose("Connected!",1)
+		verbose("Connected!")
 	except:
-		verbose("Can not connect!",1)
+		verbose("Can not connect!")
 	fileToSend = sys.argv[1]
 	if checkLocalFile(fileToSend) and checkRemoteFile(fileToSend):
 			sendFile(fileToSend)
-	verbose("Bye!",1)
+	verbose("Bye!")
