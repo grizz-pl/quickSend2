@@ -18,7 +18,7 @@
 
 __author__    = "Witold Firlej (http://grizz.pl)"
 __project__      = "quickSend2"
-__version__   = "d.2010.12.13.6"
+__version__   = "d.2010.12.13.7"
 __license__   = "GPL"
 __copyright__ = "Witold Firlej"
 
@@ -85,10 +85,10 @@ def checkRemoteFile(filename,category):
 #
 #--------------------------------------------------------------------
 #
-def sendFile(filename,category):
+def sendFile(fileToSend,filename,category):
 	verbose("Sending...")
 	try:
-		ftp.storbinary("STOR " + category + "/" +filename, open(filename, "rb"), 1024)
+		ftp.storbinary("STOR " + category + "/" +filename, open(fileToSend, "rb"), 1024)
 		verbose("...OK!")
 	except:
 		verbose("...failed!")
@@ -188,11 +188,13 @@ def work():
 	except:
 		verbose("Can not connect!")
 	fileToSend = sys.argv[1]
+	filename = fileToSend
 	if checkLocalFile(fileToSend):
 		category = chooseCategory(listCategories())
-		if checkRemoteFile(fileToSend,category):
-			addComment(fileToSend, category, raw_input("Input comment: "))
-			sendFile(fileToSend,category)
+		if not checkRemoteFile(fileToSend,category): 			#if there is, already, file with this filename, on server. Rename it!
+			filename = raw_input("File Exists!\n\tEnter a new name for the file: ")
+		addComment(filename, category, raw_input("Input comment: "))
+		sendFile(fileToSend, filename, category)
 	verbose("Bye!")
 #--------------------------------------------------------------------
 #--------------------------------------------------------------------
