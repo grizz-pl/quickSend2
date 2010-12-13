@@ -18,7 +18,7 @@
 
 __author__    = "Witold Firlej (http://grizz.pl)"
 __project__      = "quickSend2"
-__version__   = "d.2010.12.13.2"
+__version__   = "d.2010.12.13.3"
 __license__   = "GPL"
 __copyright__ = "Witold Firlej"
 
@@ -71,18 +71,19 @@ def checkLocalFile(filename):
 
 
 
-def checkRemoteFile(filename):
+def checkRemoteFile(filename,category):
+	ftp.cwd(category) 
 	files = ftp.nlst()
+	ftp.cwd("/") 				# return to main folder
 	if filename in files:
-		verbose("There is file named %s on Server"%filename)
+		verbose("There is file named %s in category %s"%(filename,category))
 		return False
 	else:
 		return True
 
 
 
-def sendFile(filename):
-	category = chooseCategory()
+def sendFile(filename,category):
 	verbose("Sending...")
 	try:
 		ftp.storbinary("STOR " + category + "/" +filename, open(filename, "rb"), 1024)
@@ -90,7 +91,6 @@ def sendFile(filename):
 	except:
 		verbose("...failed!")
 		raise
-	addComment(filename, category)
 
 
 
@@ -149,8 +149,11 @@ def work():
 	except:
 		verbose("Can not connect!")
 	fileToSend = sys.argv[1]
-	if checkLocalFile(fileToSend) and checkRemoteFile(fileToSend):
-			sendFile(fileToSend)
+	if checkLocalFile(fileToSend):
+		category = chooseCategory()
+		if checkRemoteFile(fileToSend,category):
+			addComment(fileToSend, category)
+			sendFile(fileToSend,category)
 	verbose("Bye!")
 
 
