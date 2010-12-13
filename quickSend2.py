@@ -26,7 +26,9 @@ import sys
 import ConfigParser
 import os
 from ftplib import FTP_TLS
-
+#
+#--------------------------------------------------------------------
+#
 def verbose (msg, level=1):
 	try:
 		for item in sys.argv:
@@ -34,9 +36,9 @@ def verbose (msg, level=1):
 				print msg
 	except IndexError:
 		pass
-
-
-
+#
+#--------------------------------------------------------------------
+#
 def checkFiles():
 	"""
 	Check if basic conf file exists. If not, create them.
@@ -49,16 +51,16 @@ def checkFiles():
 		config.set("Server", "passwd", "") 		##XXX no plain text here!
 		with open('quickSend2.conf', 'wb') as configfile:
 			config.write(configfile)
-
-
-
+#
+#--------------------------------------------------------------------
+#
 def connectToFtp():
 	ftp.connect(config.get("Server", "host"))
 	ftp.login(config.get("Server", "user"), config.get("Server", "passwd"))
 	ftp.prot_p()
-
-
-
+#
+#--------------------------------------------------------------------
+#
 def checkLocalFile(filename):
 	result = os.path.isfile(filename)
 	##XXX check, also, size of the file
@@ -68,9 +70,9 @@ def checkLocalFile(filename):
 	else:
 		verbose("There is no something like "+filename)
 		return result # False
-
-
-
+#
+#--------------------------------------------------------------------
+#
 def checkRemoteFile(filename,category):
 	ftp.cwd(category) 
 	files = ftp.nlst()
@@ -80,9 +82,9 @@ def checkRemoteFile(filename,category):
 		return False
 	else:
 		return True
-
-
-
+#
+#--------------------------------------------------------------------
+#
 def sendFile(filename,category):
 	verbose("Sending...")
 	try:
@@ -91,9 +93,9 @@ def sendFile(filename,category):
 	except:
 		verbose("...failed!")
 		raise
-
-
-
+#
+#--------------------------------------------------------------------
+#
 def addComment(filename, category, comment):
 	"""
 	add comment in .comments/category/filename.comment
@@ -101,10 +103,9 @@ def addComment(filename, category, comment):
 	##XXX try / except
 	open('comment.txt', 'w').write(comment)
 	ftp.storlines("STOR " + ".comments/"+category+"/"+filename+".comment", open('comment.txt'))
-
-
-
-
+#
+#--------------------------------------------------------------------
+#
 def listCategories():
 	"""
 	list folders on server
@@ -116,8 +117,9 @@ def listCategories():
 		if isDirectory(filename):
 			folders.append(filename)
 	return folders
-
-
+#
+#--------------------------------------------------------------------
+#
 def isDirectory(filename):
 	current = ftp.pwd()
 	try:
@@ -127,13 +129,16 @@ def isDirectory(filename):
 		return False
 	ftp.cwd(current)
 	return True
-
-
-
+#
+#--------------------------------------------------------------------
+#
 def work():
 	"""
 	CUI
 	"""
+	#
+	#----------------------------------------------------------------
+	#
 	def chooseCategory(folders):
 		"""
 		choose category
@@ -149,7 +154,9 @@ def work():
 				return folders[int(x)-1] 			# return category name
 			else:
 				print "Numbers only!"
-			
+	#
+	#----------------------------------------------------------------
+	#
 	verbose("Conecting...")
 	try:
 		connectToFtp()
@@ -163,10 +170,9 @@ def work():
 			addComment(fileToSend, category, raw_input("Input comment: "))
 			sendFile(fileToSend,category)
 	verbose("Bye!")
-
-
-
-
+#--------------------------------------------------------------------
+#--------------------------------------------------------------------
+#--------------------------------------------------------------------
 if __name__ == "__main__":
 	verbose("\n\t%s \n\tversion %s \n\tby %s\n" % (__project__, __version__, __author__))
 	config = ConfigParser.ConfigParser()
