@@ -18,7 +18,7 @@
 
 __author__    = "Witold Firlej (http://grizz.pl)"
 __project__      = "quickSend2"
-__version__   = "d.2010.12.13.7"
+__version__   = "0.2"
 __license__   = "GPL"
 __copyright__ = "Witold Firlej"
 
