@@ -18,7 +18,7 @@
 
 __author__    = "Witold Firlej (http://grizz.pl)"
 __project__      = "quickSend2"
-__version__   = "d.2010.12.13.1 "
+__version__   = "d.2010.12.13.2"
 __license__   = "GPL"
 __copyright__ = "Witold Firlej"
 
@@ -138,13 +138,10 @@ def isDirectory(filename):
 
 
 
-
-if __name__ == "__main__":
-	verbose("\n\t%s \n\tversion %s \n\tby %s\n" % (__project__, __version__, __author__))
-	config = ConfigParser.ConfigParser()
-	checkFiles()
-	config.read("quickSend2.conf")
-	ftp = FTP_TLS()
+def work():
+	"""
+	CUI
+	"""
 	verbose("Conecting...")
 	try:
 		connectToFtp()
@@ -155,3 +152,14 @@ if __name__ == "__main__":
 	if checkLocalFile(fileToSend) and checkRemoteFile(fileToSend):
 			sendFile(fileToSend)
 	verbose("Bye!")
+
+
+
+
+if __name__ == "__main__":
+	verbose("\n\t%s \n\tversion %s \n\tby %s\n" % (__project__, __version__, __author__))
+	config = ConfigParser.ConfigParser()
+	checkFiles()
+	config.read("quickSend2.conf")
+	ftp = FTP_TLS()
+	work()
