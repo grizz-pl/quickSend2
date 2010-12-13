@@ -18,7 +18,7 @@
 
 __author__    = "Witold Firlej (http://grizz.pl)"
 __project__      = "quickSend2"
-__version__   = "0.1"
+__version__   = "d.2010.12.13.1 "
 __license__   = "GPL"
 __copyright__ = "Witold Firlej"
 
@@ -32,13 +32,6 @@ def verbose (msg, level=1):
 		for item in sys.argv:
 			if item == "-v" and level == 1:
 				print msg
-				break
-			elif item == "-vv" and level <= 2:
-				print msg
-				break
-			elif item == "-vvv" and level <= 3:
-				print msg
-				break
 	except IndexError:
 		pass
 
@@ -63,6 +56,8 @@ def connectToFtp():
 	ftp.connect(config.get("Server", "host"))
 	ftp.login(config.get("Server", "user"), config.get("Server", "passwd"))
 	ftp.prot_p()
+
+
 
 def checkLocalFile(filename):
 	result = os.path.isfile(filename)
@@ -103,7 +98,6 @@ def addComment(filename, category):
 	##XXX try / except
 	open('comment.txt', 'w').write(raw_input("Input comment: "))
 	ftp.storlines("STOR " + ".comments/"+category+"/"+filename+".comment", open('comment.txt'))
-
 
 
 
