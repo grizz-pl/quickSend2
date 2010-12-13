@@ -18,7 +18,7 @@
 
 __author__    = "Witold Firlej (http://grizz.pl)"
 __project__      = "quickSend2"
-__version__   = "d.2010.12.13.4"
+__version__   = "d.2010.12.13.5"
 __license__   = "GPL"
 __copyright__ = "Witold Firlej"
 
@@ -100,9 +100,16 @@ def addComment(filename, category, comment):
 	"""
 	add comment in .comments/category/filename.comment
 	"""
-	##XXX try / except
-	open('comment.txt', 'w').write(comment)
-	ftp.storlines("STOR " + ".comments/"+category+"/"+filename+".comment", open('comment.txt'))
+	try:
+		open('comment.txt', 'w').write(comment)
+	except:
+		verbose("Can not save comment!")
+		raise
+	try:
+		ftp.storlines("STOR " + ".comments/"+category+"/"+filename+".comment", open('comment.txt'))
+	except:
+		verbose("Can not send comment!")
+		raise
 #
 #--------------------------------------------------------------------
 #
