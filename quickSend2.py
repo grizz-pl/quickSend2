@@ -18,7 +18,7 @@
 
 __author__    = "Witold Firlej (http://grizz.pl)"
 __project__      = "quickSend2"
-__version__   = "d.2010.12.13.3"
+__version__   = "d.2010.12.13.4"
 __license__   = "GPL"
 __copyright__ = "Witold Firlej"
 
@@ -105,28 +105,17 @@ def addComment(filename, category, comment):
 
 
 
-def chooseCategory():
+def listCategories():
 	"""
-	choose category
-	@return choosed category name
+	list folders on server
+	@return folders list
 	"""
 	files = ftp.nlst()
 	folders = []
 	for filename in files:
 		if isDirectory(filename):
 			folders.append(filename)
-	i = 1
-	for category in folders:
-		print str(i)+ " - " + category
-		i += 1
-	while 1:
-		x = raw_input("Choose category: ")
-		if x.isdigit():
-			return folders[int(x)-1] 			# return category name
-		else:
-			print "Numbers only!"
-
-
+	return folders
 
 
 def isDirectory(filename):
@@ -145,6 +134,22 @@ def work():
 	"""
 	CUI
 	"""
+	def chooseCategory(folders):
+		"""
+		choose category
+		@return choosed category name
+		"""
+		i = 1
+		for category in folders:
+			print str(i)+ " - " + category
+			i += 1
+		while 1:
+			x = raw_input("Choose category: ")
+			if x.isdigit():
+				return folders[int(x)-1] 			# return category name
+			else:
+				print "Numbers only!"
+			
 	verbose("Conecting...")
 	try:
 		connectToFtp()
@@ -153,7 +158,7 @@ def work():
 		verbose("Can not connect!")
 	fileToSend = sys.argv[1]
 	if checkLocalFile(fileToSend):
-		category = chooseCategory()
+		category = chooseCategory(listCategories())
 		if checkRemoteFile(fileToSend,category):
 			addComment(fileToSend, category, raw_input("Input comment: "))
 			sendFile(fileToSend,category)
