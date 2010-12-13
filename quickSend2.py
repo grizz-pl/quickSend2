@@ -18,7 +18,7 @@
 
 __author__    = "Witold Firlej (http://grizz.pl)"
 __project__      = "quickSend2"
-__version__   = "d.2010.12.13.5"
+__version__   = "d.2010.12.13.6"
 __license__   = "GPL"
 __copyright__ = "Witold Firlej"
 
@@ -139,6 +139,19 @@ def isDirectory(filename):
 #
 #--------------------------------------------------------------------
 #
+def addCategory(category):
+	"""
+	make new folder on Server
+	"""
+	try:
+		ftp.mkd(category)
+		ftp.mkd(".comments/"+category)
+	except:
+		verbose("Can not creaty a new category %s.\n\tThere is propably a file with this same name")
+		raise
+#
+#--------------------------------------------------------------------
+#
 def work():
 	"""
 	CUI
@@ -156,8 +169,12 @@ def work():
 			print str(i)+ " - " + category
 			i += 1
 		while 1:
-			x = raw_input("Choose category: ")
+			x = raw_input("Choose category number (0 to make a new category): ")
 			if x.isdigit():
+				if int(x) == 0: 					# add a new category
+					newCategory = raw_input("New category name: ")
+					addCategory(newCategory)
+					return newCategory
 				return folders[int(x)-1] 			# return category name
 			else:
 				print "Numbers only!"
