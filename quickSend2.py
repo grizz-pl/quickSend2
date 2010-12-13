@@ -94,9 +94,12 @@ def sendFile(filename,category):
 
 
 
-def addComment(filename, category):
+def addComment(filename, category, comment):
+	"""
+	add comment in .comments/category/filename.comment
+	"""
 	##XXX try / except
-	open('comment.txt', 'w').write(raw_input("Input comment: "))
+	open('comment.txt', 'w').write(comment)
 	ftp.storlines("STOR " + ".comments/"+category+"/"+filename+".comment", open('comment.txt'))
 
 
@@ -152,7 +155,7 @@ def work():
 	if checkLocalFile(fileToSend):
 		category = chooseCategory()
 		if checkRemoteFile(fileToSend,category):
-			addComment(fileToSend, category)
+			addComment(fileToSend, category, raw_input("Input comment: "))
 			sendFile(fileToSend,category)
 	verbose("Bye!")
 
