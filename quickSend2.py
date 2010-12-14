@@ -18,10 +18,18 @@
 
 __author__    = "Witold Firlej (http://grizz.pl)"
 __project__      = "quickSend2"
-__version__   = "d.2010.12.13.8"
+__version__   = "d.2010.12.14.1"
 __license__   = "GPL"
 __copyright__ = "Witold Firlej"
-
+#
+#--------------------------------------------------------------------
+#
+#TODOs:
+##TODO: add sys.stderr to errors in verbose mode
+##
+#
+#--------------------------------------------------------------------
+#
 import sys
 import ConfigParser
 import os
@@ -36,6 +44,13 @@ def verbose (msg, level=1):
 				print msg
 	except IndexError:
 		pass
+#
+#--------------------------------------------------------------------
+#
+def usage():
+	print >>sys.stderr,  "Usage: %s [OPTIONS]... [FILES]..." % prog
+	print >>sys.stderr,  "\nSuported options:"
+	print >>sys.stderr,  "\t-v\t verbose mode. Shows more informations."
 #
 #--------------------------------------------------------------------
 #
@@ -181,25 +196,29 @@ def work():
 	#
 	#----------------------------------------------------------------
 	#
-	verbose("Conecting...")
-	try:
-		connectToFtp()
-		verbose("Connected!")
-	except:
-		verbose("Can not connect!")
-	fileToSend = sys.argv[1]
-	filename = fileToSend
-	if checkLocalFile(fileToSend):
-		category = chooseCategory(listCategories())
-		while not checkRemoteFile(filename,category): 			#if there is, already, file with this filename, on server. Rename it!
-			filename = raw_input("File Exists!\n\tEnter a new name for the file: ")
-		addComment(filename, category, raw_input("Input comment: "))
-		sendFile(fileToSend, filename, category)
-	verbose("Bye!")
+	if len(sys.argv) == 1:
+		usage()
+	else:
+		verbose("Conecting...")
+		try:
+			connectToFtp()
+			verbose("Connected!")
+		except:
+			verbose("Can not connect!")
+		fileToSend = sys.argv[-1]
+		filename = fileToSend
+		if checkLocalFile(fileToSend):
+			category = chooseCategory(listCategories())
+			while not checkRemoteFile(filename,category): 			#if there is, already, file with this filename, on server. Rename it!
+				filename = raw_input("File Exists!\n\tEnter a new name for the file: ")
+			addComment(filename, category, raw_input("Input comment: "))
+			sendFile(fileToSend, filename, category)
+		verbose("Bye!")
 #--------------------------------------------------------------------
 #--------------------------------------------------------------------
 #--------------------------------------------------------------------
 if __name__ == "__main__":
+	prog = os.path.basename(sys.argv[0])
 	verbose("\n\t%s \n\tversion %s \n\tby %s\n" % (__project__, __version__, __author__))
 	config = ConfigParser.ConfigParser()
 	checkFiles()
