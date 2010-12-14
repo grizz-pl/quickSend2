@@ -48,7 +48,7 @@ def checkFiles():
 		config.add_section("Server")
 		config.set("Server", "host", "")
 		config.set("Server", "user", "")
-		config.set("Server", "passwd", "") 		##XXX no plain text here!
+		config.set("Server", "passwd", "") 		##TODO: no plain text here!
 		with open('quickSend2.conf', 'wb') as configfile:
 			config.write(configfile)
 #
@@ -63,7 +63,7 @@ def connectToFtp():
 #
 def checkLocalFile(filename):
 	result = os.path.isfile(filename)
-	##XXX check, also, size of the file
+	##TODO: check, also, size of the file
 	if result:
 		verbose("Local file exist")
 		return result # True
@@ -74,7 +74,7 @@ def checkLocalFile(filename):
 #--------------------------------------------------------------------
 #
 def checkRemoteFile(filename,category):
-	ftp.cwd(category) 
+	ftp.cwd(category)
 	files = ftp.nlst()
 	ftp.cwd("/") 				# return to main folder
 	if filename in files:
