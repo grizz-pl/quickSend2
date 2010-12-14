@@ -26,7 +26,13 @@ __copyright__ = "Witold Firlej"
 #
 #TODOs:
 ##TODO: add sys.stderr to errors in verbose mode
-##
+##TODO: validiate renamed filename - auto add extension, ignore \ /
+##TODO: check, also, size of the remotefile
+##TODO: categories cacheing to quicken sending
+##TODO: -c --category option to choose category
+##TODO: -a --autorename option to autorename file by adding filename.#.jext
+##TODO: -n --nocomment option to sending without comment prompt
+##TODO: autorecconect on ftp freeze
 #
 #--------------------------------------------------------------------
 #
@@ -78,7 +84,6 @@ def connectToFtp():
 #
 def checkLocalFile(filename):
 	result = os.path.isfile(filename)
-	##TODO: check, also, size of the file
 	if result:
 		verbose("Local file exist")
 		return result # True
