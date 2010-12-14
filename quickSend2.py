@@ -18,7 +18,7 @@
 
 __author__    = "Witold Firlej (http://grizz.pl)"
 __project__      = "quickSend2"
-__version__   = "d.2010.12.14.1"
+__version__   = "d.2010.12.14.2"
 __license__   = "GPL"
 __copyright__ = "Witold Firlej"
 #
@@ -210,7 +210,9 @@ def work():
 		if checkLocalFile(fileToSend):
 			category = chooseCategory(listCategories())
 			while not checkRemoteFile(filename,category): 			#if there is, already, file with this filename, on server. Rename it!
-				filename = raw_input("File Exists!\n\tEnter a new name for the file: ")
+				filename = ""
+				while filename == "":
+					filename = raw_input("File Exists!\n\tEnter a new name for the file: ")
 			addComment(filename, category, raw_input("Input comment: "))
 			sendFile(fileToSend, filename, category)
 		verbose("Bye!")
