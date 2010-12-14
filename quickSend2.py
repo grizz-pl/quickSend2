@@ -18,7 +18,7 @@
 
 __author__    = "Witold Firlej (http://grizz.pl)"
 __project__      = "quickSend2"
-__version__   = "d.2010.12.14.2"
+__version__   = "d.2010.12.14.3"
 __license__   = "GPL"
 __copyright__ = "Witold Firlej"
 #
@@ -206,7 +206,7 @@ def work():
 		except:
 			verbose("Can not connect!")
 		fileToSend = sys.argv[-1]
-		filename = fileToSend
+		filename = os.path.basename(fileToSend)
 		if checkLocalFile(fileToSend):
 			category = chooseCategory(listCategories())
 			while not checkRemoteFile(filename,category): 			#if there is, already, file with this filename, on server. Rename it!
