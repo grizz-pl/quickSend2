@@ -18,7 +18,7 @@
 
 __author__    = "Witold Firlej (http://grizz.pl)"
 __project__      = "quickSend2"
-__version__   = "d.2010.12.14.3"
+__version__   = "d.2010.12.14.4"
 __license__   = "GPL"
 __copyright__ = "Witold Firlej"
 #
@@ -205,7 +205,7 @@ def work():
 			verbose("Connected!")
 		except:
 			verbose("Can not connect!")
-		fileToSend = sys.argv[-1]
+		fileToSend = os.path.abspath(sys.argv[-1]) 			# to expand .. ~ etc
 		filename = os.path.basename(fileToSend)
 		if checkLocalFile(fileToSend):
 			category = chooseCategory(listCategories())
@@ -221,9 +221,10 @@ def work():
 #--------------------------------------------------------------------
 if __name__ == "__main__":
 	prog = os.path.basename(sys.argv[0])
+	progDir = os.path.dirname(sys.argv[0])
 	verbose("\n\t%s \n\tversion %s \n\tby %s\n" % (__project__, __version__, __author__))
 	config = ConfigParser.ConfigParser()
 	checkFiles()
-	config.read("quickSend2.conf")
+	config.read(progDir+"/quickSend2.conf")
 	ftp = FTP_TLS()
 	work()
