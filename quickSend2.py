@@ -18,7 +18,7 @@
 
 __author__    = "Witold Firlej (http://grizz.pl)"
 __project__      = "quickSend2"
-__version__   = "d.2010.12.14.4"
+__version__   = "d.2010.12.16.1"
 __license__   = "GPL"
 __copyright__ = "Witold Firlej"
 #
@@ -209,7 +209,7 @@ def work():
 			connectToFtp()
 			verbose("Connected!")
 		except:
-			verbose("Can not connect!")
+			print "Can not connect!\n\tCheck your configuration (quickSend2.conf file)"
 		fileToSend = os.path.abspath(sys.argv[-1]) 			# to expand .. ~ etc
 		filename = os.path.basename(fileToSend)
 		if checkLocalFile(fileToSend):
