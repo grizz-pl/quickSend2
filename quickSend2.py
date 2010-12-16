@@ -18,7 +18,7 @@
 
 __author__    = "Witold Firlej (http://grizz.pl)"
 __project__      = "quickSend2"
-__version__   = "d.2010.12.16.2"
+__version__   = "d.2010.12.16.3"
 __license__   = "GPL"
 __copyright__ = "Witold Firlej"
 #
@@ -32,6 +32,7 @@ __copyright__ = "Witold Firlej"
 ##TODO: -c --category option to choose category
 ##TODO: -a --autorename option to autorename file by adding filename.#.jext
 ##TODO: -n --nocomment option to sending without comment prompt
+##TODO: -s --sign overwrite signature from conf file
 ##TODO: autorecconect on ftp freeze
 #
 #--------------------------------------------------------------------
@@ -70,6 +71,7 @@ def checkFiles():
 		config.set("Server", "host", "")
 		config.set("Server", "user", "")
 		config.set("Server", "passwd", "") 		##TODO: no plain text here!
+		config.set("Misc",  "sign",  "")
 		with open('quickSend2.conf', 'wb') as configfile:
 			config.write(configfile)
 #
@@ -121,7 +123,7 @@ def addComment(filename, category, comment):
 	add comment in .comments/category/filename.comment
 	"""
 	try:
-		open('comment.txt', 'w').write(comment)
+		open('comment.txt', 'w').write(comment+" -- "+config.get("Misc", "sign"))
 	except:
 		verbose("Can not save comment!")
 		raise
