@@ -6,6 +6,12 @@ quickSend2 by Witold Firlej
 Changelog
 ---------
 
+## Ver. 0.3 2010/12/16
+(based on ver. d.2010.12.16.1)
+
+* don't allow blank filename duering rename
+* sending file not only from working directory, so script can be used as 'open with' option
+
 ## ver. 0.2 2010/12/13
 (based on ver. d.2010.12.13.7)
 
