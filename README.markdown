@@ -3,6 +3,13 @@ quickSend2 by Witold Firlej
 
 ## send file to remote server via ftp(es), add category and description
 
+Usage
+-----
+Usage: quickSend2.py [OPTIONS]... [FILES]...
+
+Suported options:
+        -v       verbose mode. Shows more informations.
+
 Changelog
 ---------
 
