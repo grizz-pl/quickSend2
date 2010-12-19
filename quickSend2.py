@@ -18,7 +18,7 @@
 
 __author__    = "Witold Firlej (http://grizz.pl)"
 __project__      = "quickSend2"
-__version__   = "d.2010.12.16.3"
+__version__   = "d.2010.12.19.1"
 __license__   = "GPL"
 __copyright__ = "Witold Firlej"
 #
@@ -123,7 +123,7 @@ def addComment(filename, category, comment):
 	add comment in .comments/category/filename.comment
 	"""
 	try:
-		open('comment.txt', 'w').write(comment+" -- "+config.get("Misc", "sign"))
+		open('comment.txt', 'w').write(comment+" --- "+config.get("Misc", "sign"))
 	except:
 		verbose("Can not save comment!")
 		raise
